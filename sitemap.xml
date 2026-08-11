@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://marmorizart.com.br/</loc>
+    <lastmod>2026-08-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://marmorizart.com.br/assets/img/ilha-area-gourmet-granito-branco.jpg</image:loc>
+      <image:title>Ilha de área gourmet em granito branco</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://marmorizart.com.br/assets/img/bancada-cozinha-granito-preto-sao-gabriel.jpg</image:loc>
+      <image:title>Bancada de cozinha em granito Preto São Gabriel</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://marmorizart.com.br/assets/img/lavatorio-travertino-bege-bahia.jpg</image:loc>
+      <image:title>Lavatório em travertino Bege Bahia</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://marmorizart.com.br/assets/img/escada-granito-branco-itaunas-betim.jpg</image:loc>
+      <image:title>Escada em granito branco em Betim</image:title>
+    </image:image>
+  </url>
+</urlset>
