@@ -306,63 +306,82 @@
       <p class="sechead__lead">Cinco famílias de pedra, cada uma com um uso certo. A gente diz qual serve para o seu ambiente.</p>
     </header>
 
-    <div class="materiais">
+    <div class="mats" id="mats">
+      <div class="mats__nav" role="tablist" aria-label="Materiais que trabalhamos">
+        <button role="tab" id="matab-0" aria-controls="matp-0" aria-selected="true" tabindex="0" data-i="0">
+          <span class="mono">01</span><span class="mats__nome">Granito</span><i class="mats__barra"></i>
+        </button>
+        <button role="tab" id="matab-1" aria-controls="matp-1" aria-selected="false" tabindex="-1" data-i="1">
+          <span class="mono">02</span><span class="mats__nome">Mármore</span><i class="mats__barra"></i>
+        </button>
+        <button role="tab" id="matab-2" aria-controls="matp-2" aria-selected="false" tabindex="-1" data-i="2">
+          <span class="mono">03</span><span class="mats__nome">Quartzito</span><i class="mats__barra"></i>
+        </button>
+        <button role="tab" id="matab-3" aria-controls="matp-3" aria-selected="false" tabindex="-1" data-i="3">
+          <span class="mono">04</span><span class="mats__nome">Quartzo e Silestone</span><i class="mats__barra"></i>
+        </button>
+        <button role="tab" id="matab-4" aria-controls="matp-4" aria-selected="false" tabindex="-1" data-i="4">
+          <span class="mono">05</span><span class="mats__nome">Travertino</span><i class="mats__barra"></i>
+        </button>
+      </div>
 
-      <article class="mat">
-        <figure class="mat__img">
-          <img src="assets/img/material-granito.webp" alt="Amostra de granito branco polido usado em bancada e escada" loading="lazy" width="720" height="480">
-        </figure>
-        <div class="mat__txt">
-          <span class="mono">O mais vendido</span>
-          <h3>Granito</h3>
-          <p>Aguenta calor, risco e uso pesado. É a escolha certa para bancada de cozinha, ilha, soleira e escada. Sai polido ou escovado.</p>
-        </div>
-      </article>
-
-      <article class="mat">
-        <figure class="mat__img">
-          <img src="assets/img/material-marmore.webp" alt="Amostra de mármore branco com veios acinzentados" loading="lazy" width="720" height="720">
-        </figure>
-        <div class="mat__txt">
-          <span class="mono">Para banheiro</span>
-          <h3>Mármore</h3>
-          <p>Veio desenhado e toque macio. Frágil e sensível a mancha, por isso indicamos em lavatório, revestimento e tampo de apoio, nunca em pia de cozinha.</p>
-        </div>
-      </article>
-
-      <article class="mat">
-        <figure class="mat__img">
-          <img src="assets/img/material-quartzito.webp" alt="Amostra de quartzito cinza com veios brancos" loading="lazy" width="720" height="720">
-        </figure>
-        <div class="mat__txt">
-          <span class="mono">Alto padrão</span>
-          <h3>Quartzito</h3>
-          <p>A dureza do granito com o desenho do mármore. Taj Mahal, Perla Venata e Perla Elegante chegam por encomenda, com prazo maior.</p>
-        </div>
-      </article>
-
-      <article class="mat">
-        <figure class="mat__img">
-          <img src="assets/img/material-quartzo-silestone.webp" alt="Amostra de quartzo Silestone branco com veio fino" loading="lazy" width="720" height="720">
-        </figure>
-        <div class="mat__txt">
-          <span class="mono">Engenharia</span>
-          <h3>Quartzo e Silestone</h3>
-          <p>Superfície uniforme, sem surpresa de veio entre uma chapa e outra. Boa para quem quer cozinha clara com menos manutenção.</p>
-        </div>
-      </article>
-
-      <article class="mat">
-        <figure class="mat__img">
-          <img src="assets/img/material-travertino.webp" alt="Amostra de travertino bege de tom quente" loading="lazy" width="720" height="720">
-        </figure>
-        <div class="mat__txt">
-          <span class="mono">Tom quente</span>
-          <h3>Travertino</h3>
-          <p>O Bege Bahia é o nosso. Uma espécie de mármore de cor terrosa, que cai bem em lavatório, revestimento de parede e área externa.</p>
-        </div>
-      </article>
-
+      <div class="mats__palco">
+        <article class="matp is-on" id="matp-0" role="tabpanel" aria-labelledby="matab-0">
+          <figure class="matp__img">
+            <img src="assets/img/material-granito.webp" alt="Amostra de granito branco polido, usado em bancada e escada"  width="960" height="720">
+          </figure>
+          <div class="matp__txt">
+            <span class="mono">O mais vendido</span>
+            <h3>Granito</h3>
+            <p>Aguenta calor, risco e uso pesado. É a escolha certa para bancada de cozinha, ilha, soleira e escada. Sai polido ou escovado.</p>
+            <a class="btn btn--ouro btn--sm" data-wa="Granito" href="#orcamento">Orçar em granito</a>
+          </div>
+        </article>
+        <article class="matp" id="matp-1" role="tabpanel" aria-labelledby="matab-1" hidden>
+          <figure class="matp__img">
+            <img src="assets/img/material-marmore.webp" alt="Amostra de mármore branco com veios acinzentados" loading="lazy" width="960" height="720">
+          </figure>
+          <div class="matp__txt">
+            <span class="mono">Para banheiro</span>
+            <h3>Mármore</h3>
+            <p>Veio desenhado e toque macio. Frágil e sensível a mancha, por isso indicamos em lavatório, revestimento e tampo de apoio, nunca em pia de cozinha.</p>
+            <a class="btn btn--ouro btn--sm" data-wa="Mármore" href="#orcamento">Orçar em mármore</a>
+          </div>
+        </article>
+        <article class="matp" id="matp-2" role="tabpanel" aria-labelledby="matab-2" hidden>
+          <figure class="matp__img">
+            <img src="assets/img/material-quartzito.webp" alt="Amostra de quartzito cinza com veios brancos" loading="lazy" width="960" height="720">
+          </figure>
+          <div class="matp__txt">
+            <span class="mono">Alto padrão</span>
+            <h3>Quartzito</h3>
+            <p>A dureza do granito com o desenho do mármore. Taj Mahal, Perla Venata e Perla Elegante chegam por encomenda, com prazo maior.</p>
+            <a class="btn btn--ouro btn--sm" data-wa="Quartzito" href="#orcamento">Orçar em quartzito</a>
+          </div>
+        </article>
+        <article class="matp" id="matp-3" role="tabpanel" aria-labelledby="matab-3" hidden>
+          <figure class="matp__img">
+            <img src="assets/img/material-quartzo-silestone.webp" alt="Amostra de quartzo Silestone branco com veio fino" loading="lazy" width="960" height="720">
+          </figure>
+          <div class="matp__txt">
+            <span class="mono">Engenharia</span>
+            <h3>Quartzo e Silestone</h3>
+            <p>Superfície uniforme, sem surpresa de veio entre uma chapa e outra. Boa para quem quer cozinha clara com menos manutenção.</p>
+            <a class="btn btn--ouro btn--sm" data-wa="Quartzo e Silestone" href="#orcamento">Orçar em quartzo e silestone</a>
+          </div>
+        </article>
+        <article class="matp" id="matp-4" role="tabpanel" aria-labelledby="matab-4" hidden>
+          <figure class="matp__img">
+            <img src="assets/img/material-travertino.webp" alt="Amostra de travertino bege de tom quente" loading="lazy" width="960" height="720">
+          </figure>
+          <div class="matp__txt">
+            <span class="mono">Tom quente</span>
+            <h3>Travertino</h3>
+            <p>O Bege Bahia é o nosso. Uma espécie de mármore de cor terrosa, que cai bem em lavatório, revestimento de parede e área externa.</p>
+            <a class="btn btn--ouro btn--sm" data-wa="Travertino" href="#orcamento">Orçar em travertino</a>
+          </div>
+        </article>
+      </div>
     </div>
 
     <div class="maisopcoes">
@@ -494,16 +513,10 @@
 <!-- ============ 05 AVALIAÇÕES ============ -->
 <section class="sec sec--light" id="avaliacoes">
   <div class="wrap">
-    <header class="sechead sechead--row">
-      <div>
-        <span class="mono num">05 / Quem já comprou</span>
-        <h2>Cinco anos de obra,<br><em>zero troca por defeito.</em></h2>
-        <p class="sechead__lead">Cada crítica que chegou virou regra nova dentro da oficina. É por isso que prazo, instalação e transporte estão escritos com todas as letras neste site.</p>
-      </div>
-      <div class="nota">
-        <strong>30</strong>
-        <p class="mono">clientes avaliaram<br>a Marmorizart no Google</p>
-      </div>
+    <header class="sechead">
+      <span class="mono num">05 / Quem já comprou</span>
+      <h2>Cinco anos de obra,<br><em>zero troca por defeito.</em></h2>
+      <p class="sechead__lead">Cada crítica que chegou virou regra nova dentro da oficina. É por isso que prazo, instalação e transporte estão escritos com todas as letras neste site.</p>
     </header>
 
     <!-- ============================================================

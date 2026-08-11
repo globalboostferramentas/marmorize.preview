@@ -161,6 +161,68 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(ritmo);
   })();
 
+  /* ---------- materiais: troca de painel com avanço automático ---------- */
+  (function materiais() {
+    var bloco = $('#mats');
+    if (!bloco) return;
+    var abas = $$('.mats__nav button', bloco);
+    var paineis = $$('.matp', bloco);
+    var atual = 0, relogio;
+    var animar = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function mostrar(i) {
+      atual = (i + paineis.length) % paineis.length;
+      abas.forEach(function (b, k) {
+        b.setAttribute('aria-selected', k === atual ? 'true' : 'false');
+        b.tabIndex = k === atual ? 0 : -1;
+      });
+      paineis.forEach(function (p, k) {
+        if (k === atual) {
+          p.hidden = false;
+          void p.offsetWidth;                 // aplica o estado inicial sem depender de requestAnimationFrame
+          p.classList.add('is-on');
+        } else {
+          p.classList.remove('is-on');
+          setTimeout(function () { if (!p.classList.contains('is-on')) p.hidden = true; }, 500);
+        }
+      });
+      // reinicia a barra do item ativo
+      var barra = abas[atual].querySelector('.mats__barra');
+      if (barra) { barra.style.animation = 'none'; void barra.offsetWidth; barra.style.animation = ''; }
+    }
+
+    function rodar() {
+      if (!animar) return;
+      clearInterval(relogio);
+      relogio = setInterval(function () { mostrar(atual + 1); }, 6000);
+    }
+
+    abas.forEach(function (b, k) {
+      b.addEventListener('click', function () { mostrar(k); rodar(); });
+      b.addEventListener('mouseenter', function () { if (animar) { mostrar(k); rodar(); } });
+      b.addEventListener('keydown', function (e) {
+        var d = e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1
+              : e.key === 'ArrowLeft'  || e.key === 'ArrowUp'   ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        mostrar(atual + d);
+        abas[atual].focus();
+        rodar();
+      });
+    });
+
+    bloco.addEventListener('mouseenter', function () { bloco.classList.add('is-parado'); clearInterval(relogio); });
+    bloco.addEventListener('mouseleave', function () { bloco.classList.remove('is-parado'); rodar(); });
+
+    // só começa a girar quando a seção aparece na tela
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (e) {
+        if (e[0].isIntersecting) { rodar(); } else { clearInterval(relogio); }
+      }, { threshold: .25 });
+      io.observe(bloco);
+    } else { rodar(); }
+  })();
+
   /* ---------- formulário curto de orçamento ----------
      todo botão de orçamento abre este formulário: o lead é registrado na
      planilha e só então segue para o WhatsApp com a mensagem pronta.
@@ -333,7 +395,7 @@
 
   /* ---------- animação de entrada ---------- */
   (function entrada() {
-    var alvos = $$('.sechead, .card, .mat, .passos li, .g, .nao li, .ficha__frase, .ficha__dl, .tabela, .kit, .checklist, .sobre__fig, .sobre__txt, .maisopcoes, .cidades, .faq details, .form, .cta__txt, .alerta');
+    var alvos = $$('.sechead, .card, .passos li, .g, .nao li, .ficha__frase, .ficha__dl, .tabela, .kit, .checklist, .sobre__fig, .sobre__txt, .maisopcoes, .cidades, .faq details, .form, .cta__txt, .alerta');
     if (!('IntersectionObserver' in window)) return;
     var io = new IntersectionObserver(function (entradas) {
       entradas.forEach(function (en) {
