@@ -15,6 +15,20 @@ site/
     └── img/          imagens já otimizadas (jpg + webp), logo e ícones
 ```
 
+## Captura de leads na planilha do Google
+
+Todo botão de orçamento abre um formulário curto (nome, WhatsApp, peça). Ao enviar, o lead é gravado
+numa planilha do Google e só então o WhatsApp abre com a mensagem pronta. O formulário completo da
+última dobra e o pop-up de medição gravam na mesma planilha.
+
+**Para ligar**: siga o passo a passo no início de `../integracao/planilha-apps-script.gs` (criar a
+planilha, colar o script, publicar como App da Web) e cole a URL gerada na constante `PLANILHA`, no
+começo de `assets/js/app.js`.
+
+Enquanto `PLANILHA` estiver vazia o site funciona normalmente: o cliente é levado ao WhatsApp, só não
+fica registro na planilha. O envio usa `sendBeacon`, que entrega em segundo plano, então nem uma
+planilha fora do ar nem uma internet lenta seguram o cliente na tela.
+
 ## O que precisa ser trocado antes de publicar
 
 1. **Avaliações do Google.** Em `assets/js/app.js`, o array `AVALIACOES` (topo do arquivo) está com seis

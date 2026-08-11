@@ -3,12 +3,12 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://marmorizart.com.br/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://marmorizart.com.br/assets/img/ilha-area-gourmet-granito-branco.jpg</image:loc>
-      <image:title>Ilha de área gourmet em granito branco</image:title>
+      <image:loc>https://marmorizart.com.br/assets/img/hero-area-lazer-desktop.jpg</image:loc>
+      <image:title>Área de lazer com pedra natural, obra em Betim</image:title>
     </image:image>
     <image:image>
       <image:loc>https://marmorizart.com.br/assets/img/bancada-cozinha-granito-preto-sao-gabriel.jpg</image:loc>

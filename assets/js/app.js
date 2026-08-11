@@ -5,6 +5,16 @@
   'use strict';
 
   var WHATSAPP = '553137872707';
+
+  /* ---------------------------------------------------------------------
+     PLANILHA DO GOOGLE
+     Cole aqui a URL do App da Web gerada pelo Apps Script (termina em /exec).
+     O passo a passo está em integracao/planilha-apps-script.gs.
+     Enquanto estiver vazio, o site funciona normalmente: o lead segue para
+     o WhatsApp, só não fica registrado na planilha.
+     --------------------------------------------------------------------- */
+  var PLANILHA = '';
+
   var $  = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 
@@ -12,8 +22,38 @@
     return 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(texto);
   }
   function abrirWhats(texto) {
-    window.open(whats(texto), '_blank', 'noopener');
+    var url = whats(texto);
+    var aba = window.open(url, '_blank');
+    if (!aba) window.location.href = url;   // se o navegador bloquear a nova aba
   }
+
+  /* grava o lead na planilha sem travar o redirecionamento:
+     sendBeacon entrega em segundo plano, mesmo com a página saindo do ar */
+  function registrarLead(dados) {
+    if (!PLANILHA) return;
+    dados.origem = document.title;
+    dados.pagina = location.href;
+    try {
+      var corpo = new URLSearchParams(dados);
+      if (navigator.sendBeacon && navigator.sendBeacon(PLANILHA, corpo)) return;
+      fetch(PLANILHA, { method: 'POST', mode: 'no-cors', keepalive: true, body: corpo });
+    } catch (err) { /* nunca impedir o cliente de chegar ao WhatsApp */ }
+  }
+
+  /* telefone: (31) 99999-9999 */
+  function mascaraFone(v) {
+    var d = (v || '').replace(/\D/g, '').slice(0, 11);
+    if (d.length > 6) return '(' + d.slice(0, 2) + ') ' + d.slice(2, d.length === 11 ? 7 : 6) + '-' + d.slice(d.length === 11 ? 7 : 6);
+    if (d.length > 2) return '(' + d.slice(0, 2) + ') ' + d.slice(2);
+    if (d.length) return '(' + d;
+    return '';
+  }
+  function foneValido(v) {
+    return (v || '').replace(/\D/g, '').length >= 10;
+  }
+  $$('input[type="tel"]').forEach(function (campo) {
+    campo.addEventListener('input', function () { campo.value = mascaraFone(campo.value); });
+  });
 
   /* ---------------------------------------------------------------------
      AVALIAÇÕES DO GOOGLE
@@ -46,33 +86,6 @@
     }
   }
 
-  /* ---------- status aberto / fechado ---------- */
-  function status() {
-    var dot = $('#statusDot'), txt = $('#statusText');
-    if (!dot || !txt) return;
-    var agora = new Date();
-    var dia = agora.getDay();               // 0 domingo
-    var min = agora.getHours() * 60 + agora.getMinutes();
-    var aberto = dia >= 1 && dia <= 5 && ((min >= 480 && min < 720) || (min >= 780 && min < 1040));
-
-    var curto = window.matchMedia('(max-width: 760px)').matches;
-
-    if (aberto) {
-      dot.className = 'dot on';
-      txt.textContent = curto ? 'Aberto agora' : 'Loja aberta agora';
-    } else {
-      dot.className = 'dot off';
-      if (curto) {
-        txt.textContent = dia === 6 ? 'Sábado sob agendamento' : 'WhatsApp sempre aberto';
-      } else {
-        txt.textContent = dia === 6
-          ? 'Sábado: medição sob agendamento · WhatsApp respondido'
-          : 'Loja fechada · WhatsApp respondido a qualquer hora';
-      }
-    }
-  }
-  status();
-  window.addEventListener('resize', status);
 
   /* ---------- header e menu ---------- */
   var head = $('#head'), nav = $('#nav'), burger = $('#burger');
@@ -94,56 +107,25 @@
     });
   }
 
-  /* ---------- hero: slideshow ---------- */
-  (function hero() {
-    var slides = $$('.hero__slide');
-    if (slides.length < 2) return;
-    var dots = $('#heroDots'), num = $('#heroNum');
-    var i = 0, timer;
 
-    slides.forEach(function (_, k) {
-      var b = document.createElement('button');
-      b.setAttribute('role', 'tab');
-      b.setAttribute('aria-label', 'Foto ' + (k + 1));
-      if (k === 0) b.classList.add('is-on');
-      b.addEventListener('click', function () { ir(k); });
-      dots.appendChild(b);
-    });
-    var botoes = $$('button', dots);
+  /* ---------- cards que viram ----------
+     um clique ou toque alterna a face, em qualquer aparelho.
+     só um card fica virado por vez */
+  (function cards() {
+    var lista = $$('.card');
 
-    function ir(k) {
-      slides[i].classList.remove('is-on');
-      botoes[i].classList.remove('is-on');
-      i = (k + slides.length) % slides.length;
-      slides[i].classList.add('is-on');
-      botoes[i].classList.add('is-on');
-      num.textContent = ('0' + (i + 1)).slice(-2);
-      reiniciar();
-    }
-    function reiniciar() {
-      clearInterval(timer);
-      timer = setInterval(function () { ir(i + 1); }, 6000);
-    }
-
-    $('#heroNext').addEventListener('click', function () { ir(i + 1); });
-    $('#heroPrev').addEventListener('click', function () { ir(i - 1); });
-    reiniciar();
-
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden) { clearInterval(timer); } else { reiniciar(); }
+    lista.forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('a')) return;          // o botão do verso segue seu caminho
+        var virado = card.classList.contains('is-flip');
+        lista.forEach(function (c) { c.classList.remove('is-flip'); });
+        card.classList.toggle('is-flip', !virado);
+      });
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.classList.toggle('is-flip'); }
+      });
     });
   })();
-
-  /* ---------- cards que viram (toque no mobile) ---------- */
-  $$('.card').forEach(function (card) {
-    card.addEventListener('click', function (e) {
-      if (e.target.closest('a')) return;
-      if (window.matchMedia('(hover: none)').matches) card.classList.toggle('is-flip');
-    });
-    card.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.classList.toggle('is-flip'); }
-    });
-  });
 
   /* ---------- carrossel de avaliações, deslizando sozinho ---------- */
   (function reviews() {
@@ -179,15 +161,75 @@
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(ritmo);
   })();
 
-  /* ---------- links de whatsapp com contexto ---------- */
-  $$('[data-wa]').forEach(function (el) {
-    el.addEventListener('click', function (e) {
+  /* ---------- formulário curto de orçamento ----------
+     todo botão de orçamento abre este formulário: o lead é registrado na
+     planilha e só então segue para o WhatsApp com a mensagem pronta.
+     O href continua apontando para o WhatsApp, como saída para quem
+     estiver sem JavaScript. */
+  (function lead() {
+    var caixa = $('#lead');
+    if (!caixa) return;
+    var form = $('#leadForm'), nome = $('#leadNome'), fone = $('#leadFone'),
+        peca = $('#leadPeca'), titulo = $('#leadTitle');
+
+    var PECAS = ['Bancada de cozinha', 'Ilha de cozinha', 'Lavatório de banheiro', 'Soleira e peitoril',
+                 'Escada e degrau', 'Área gourmet', 'Tampo de mesa', 'Piso, fachada e revestimento',
+                 'Restauração e polimento', 'Lápide e arte funerária'];
+
+    function abrir(contexto) {
+      var conhecida = PECAS.indexOf(contexto) > -1;
+      peca.value = conhecida ? contexto : '';
+      titulo.textContent = conhecida ? 'Orçamento de ' + contexto.toLowerCase() : 'Vamos ao seu orçamento';
+      caixa.hidden = false;
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(function () { caixa.classList.add('is-on'); });
+      setTimeout(function () { nome.focus(); }, 320);
+    }
+    function fechar() {
+      caixa.classList.remove('is-on');
+      document.body.style.overflow = '';
+      setTimeout(function () { caixa.hidden = true; }, 320);
+    }
+
+    $$('[data-wa]').forEach(function (el) {
       var ctx = el.dataset.wa;
-      if (ctx === 'orcamento' || ctx === 'hero') return;   // esses rolam até o formulário
-      e.preventDefault();
-      abrirWhats('Olá, Marmorizart! Vim pelo site e quero um orçamento de: ' + ctx + '. Pode me ajudar?');
+      var rotulo = (ctx === 'orcamento' || ctx === 'hero') ? '' : ctx;
+      if (rotulo) el.href = whats('Olá, Marmorizart! Vim pelo site e quero um orçamento de: ' + rotulo + '. Pode me ajudar?');
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        abrir(rotulo);
+      });
     });
-  });
+
+    $('#leadX').addEventListener('click', fechar);
+    caixa.addEventListener('click', function (e) { if (e.target === caixa) fechar(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !caixa.hidden) fechar(); });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var erro = false;
+      [nome, fone, peca].forEach(function (campo) {
+        var ok = campo === fone ? foneValido(campo.value) : campo.value.trim() !== '';
+        campo.classList.toggle('is-erro', !ok);
+        if (!ok && !erro) { campo.focus(); erro = true; }
+      });
+      if (erro) return;
+
+      registrarLead({
+        nome: nome.value.trim(),
+        telefone: fone.value.trim(),
+        peca: peca.value,
+        cidade: '',
+        medidas: ''
+      });
+      abrirWhats('Olá, Marmorizart! Meu nome é ' + nome.value.trim() + '.\n' +
+                 'Meu WhatsApp é ' + fone.value.trim() + '.\n' +
+                 'Preciso de: ' + peca.value + '.\n' +
+                 'Vim pelo site e gostaria do orçamento.');
+      fechar();
+      form.reset();
+    });
+  })();
 
   /* ---------- formulário principal ---------- */
   (function form() {
@@ -195,17 +237,27 @@
     if (!f) return;
     f.addEventListener('submit', function (e) {
       e.preventDefault();
-      var nome = $('#fNome'), cidade = $('#fCidade'), peca = $('#fPeca'), medida = $('#fMedida');
+      var nome = $('#fNome'), fone = $('#fFone'), cidade = $('#fCidade'),
+          peca = $('#fPeca'), medida = $('#fMedida');
       var falta = false;
 
-      [nome, cidade, peca].forEach(function (campo) {
-        var ok = campo.value.trim() !== '';
+      [nome, fone, cidade, peca].forEach(function (campo) {
+        var ok = campo === fone ? foneValido(campo.value) : campo.value.trim() !== '';
         campo.closest('.f').classList.toggle('is-erro', !ok);
         if (!ok && !falta) { campo.focus(); falta = true; }
       });
       if (falta) return;
 
+      registrarLead({
+        nome: nome.value.trim(),
+        telefone: fone.value.trim(),
+        peca: peca.value,
+        cidade: cidade.value.trim(),
+        medidas: medida.value.trim()
+      });
+
       var msg = 'Olá, Marmorizart! Meu nome é ' + nome.value.trim() + '.\n' +
+                'Meu WhatsApp é ' + fone.value.trim() + '.\n' +
                 'Sou de ' + cidade.value.trim() + '.\n' +
                 'Preciso de: ' + peca.value + '.\n' +
                 'Medidas: ' + (medida.value.trim() || 'ainda não tenho, preciso de ajuda') + '.\n' +
@@ -253,6 +305,7 @@
       e.preventDefault();
       var nome = $('#popNome').value.trim(), peca = $('#popPeca').value;
       if (!nome || !peca) return;
+      registrarLead({ nome: nome, telefone: '', peca: peca, cidade: '', medidas: 'veio do pop-up de medição' });
       abrirWhats('Olá, Marmorizart! Meu nome é ' + nome + ' e quero a medição gratuita para: ' + peca + '. Vim pelo site.');
       fechar();
     });

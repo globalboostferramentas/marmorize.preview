@@ -31,9 +31,10 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Archivo:wght@400;500;600&family=Space+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
-<link rel="preload" as="image" href="assets/img/ilha-area-gourmet-granito-branco.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/img/hero-area-lazer-desktop.webp" media="(min-width: 761px)" fetchpriority="high">
+<link rel="preload" as="image" href="assets/img/hero-area-lazer-mobile.webp" media="(max-width: 760px)" fetchpriority="high">
 </head>
 <body>
 
@@ -50,7 +51,9 @@
 <!-- ============ TOPO ============ -->
 <div class="topbar">
   <div class="wrap topbar__in">
-    <p class="mono topbar__status"><span class="dot" id="statusDot"></span><span id="statusText">Verificando horário</span></p>
+    <a class="mono topbar__status" href="https://wa.me/553137872707?text=Ol%C3%A1%2C%20Marmorizart!%20Vim%20pelo%20site%20e%20quero%20um%20or%C3%A7amento." target="_blank" rel="noopener">
+      <span class="dot"></span>Orçamento pelo WhatsApp
+    </a>
   </div>
 </div>
 
@@ -80,12 +83,11 @@
 
 <!-- ============ HERO ============ -->
 <section class="hero" aria-label="Marmoraria em Betim">
-  <div class="hero__bg" id="heroBg">
-    <figure class="hero__slide is-on"><img src="assets/img/ilha-area-gourmet-granito-branco.webp" alt="Ilha de área gourmet em granito branco executada pela Marmorizart" fetchpriority="high" width="1170" height="1007"></figure>
-    <figure class="hero__slide"><img src="assets/img/bancada-cozinha-granito-preto-sao-gabriel.webp" alt="Cozinha em U com bancada de granito Preto São Gabriel" loading="lazy" width="1024" height="1359"></figure>
-    <figure class="hero__slide"><img src="assets/img/lavatorio-marmore-branco-cuba-esculpida.webp" alt="Lavatório de banheiro em mármore branco com cuba esculpida" loading="lazy" width="736" height="741"></figure>
-    <figure class="hero__slide"><img src="assets/img/escada-granito-branco-itaunas-betim.webp" alt="Escada externa com degraus em granito branco em Betim" loading="lazy" width="960" height="1133"></figure>
-    <figure class="hero__slide"><img src="assets/img/area-gourmet-piscina-pedra-natural.webp" alt="Área de lazer com revestimento em pedra natural" loading="lazy" width="1080" height="1331"></figure>
+  <div class="hero__bg">
+    <picture>
+      <source media="(max-width: 760px)" srcset="assets/img/hero-area-lazer-mobile.webp">
+      <img src="assets/img/hero-area-lazer-desktop.webp" alt="Área de lazer com piso, borda de piscina e revestimento em pedra natural executados pela Marmorizart" fetchpriority="high" width="1600" height="900">
+    </picture>
   </div>
 
   <div class="wrap hero__in">
@@ -95,24 +97,14 @@
 
     <div class="hero__acts">
       <a class="btn btn--ouro btn--lg" data-wa="hero" href="#orcamento">Pedir orçamento</a>
-      <a class="btn btn--ghost btn--lg" href="#obras">Ver as obras</a>
     </div>
 
     <ul class="hero__proof mono">
-      <li><strong>4,1</strong> no Google</li>
       <li><strong>Medição</strong> sem custo</li>
       <li><strong>10 a 20</strong> dias de prazo</li>
     </ul>
   </div>
 
-  <div class="hero__nav">
-    <div class="wrap hero__navin">
-      <button class="hero__arrow" id="heroPrev" aria-label="Foto anterior">&#8592;</button>
-      <div class="hero__dots" id="heroDots" role="tablist" aria-label="Fotos de obras"></div>
-      <button class="hero__arrow" id="heroNext" aria-label="Próxima foto">&#8594;</button>
-      <span class="mono hero__count"><span id="heroNum">01</span> / 05</span>
-    </div>
-  </div>
 </section>
 
 <!-- ============ FICHA ============ -->
@@ -134,7 +126,6 @@
     <header class="sechead">
       <span class="mono num">01 / O que fazemos</span>
       <h2>Peça pronta,<br><em>acabamento resolvido.</em></h2>
-      <p class="sechead__lead">Passe o mouse ou toque para ver prazo e detalhes de cada peça.</p>
     </header>
 
     <div class="cards" id="cards">
@@ -307,7 +298,7 @@
 
 
 <!-- ============ 02 MATERIAIS ============ -->
-<section class="sec sec--dark" id="pedras">
+<section class="sec sec--grafite" id="pedras">
   <div class="wrap">
     <header class="sechead">
       <span class="mono num">02 / Os materiais</span>
@@ -396,7 +387,7 @@
     <header class="sechead">
       <span class="mono num">03 / Como funciona</span>
       <h2>Da primeira mensagem<br><em>à pedra instalada.</em></h2>
-      <p class="sechead__lead">Medimos, cortamos, damos o acabamento e instalamos. Quem responde o WhatsApp é o Rafael, dono da marmoraria.</p>
+      <p class="sechead__lead">O atendimento é sempre personalizado: medição, corte, acabamento e instalação são executados pela nossa própria equipe, e cada orçamento é acompanhado pessoalmente pelo proprietário.</p>
     </header>
 
     <div class="passos">
@@ -429,8 +420,8 @@
       </ol>
 
       <figure class="passos__fig">
-        <img src="assets/img/projeto-3d-bancada-cozinha-preta.webp" alt="Projeto em 3D de bancada de cozinha em granito preto feito antes do corte" loading="lazy" width="800" height="1292">
-        <figcaption>Desenho em 3D da peça antes do corte</figcaption>
+        <img src="assets/img/cozinha-instalada-betim.webp" alt="Cozinha com bancada e balcão em granito instalados pela Marmorizart em Betim" loading="lazy" width="980" height="995">
+        <figcaption>Cozinha concluída: da medida ao acabamento final</figcaption>
       </figure>
     </div>
 
@@ -507,12 +498,11 @@
       <div>
         <span class="mono num">05 / Quem já comprou</span>
         <h2>Cinco anos de obra,<br><em>zero troca por defeito.</em></h2>
-        <p class="sechead__lead">A nota do Google está aqui do lado, sem maquiagem. Cada crítica que chegou virou regra nova dentro da oficina.</p>
+        <p class="sechead__lead">Cada crítica que chegou virou regra nova dentro da oficina. É por isso que prazo, instalação e transporte estão escritos com todas as letras neste site.</p>
       </div>
       <div class="nota">
-        <strong>4,1</strong>
-        <div class="stars" aria-label="4,1 de 5 estrelas">★★★★<span>★</span></div>
-        <p class="mono">30 avaliações</p>
+        <strong>30</strong>
+        <p class="mono">clientes avaliaram<br>a Marmorizart no Google</p>
       </div>
     </header>
 
@@ -538,12 +528,12 @@
     <div class="sobre__txt">
       <span class="mono num">06 / A Marmorizart</span>
       <h2>Cinco anos de empresa,<br><em>mais de vinte de ofício.</em></h2>
-      <p>Aberta em agosto de 2019 na Av. Edméia Mattos Lazzarotti, duzentos metros depois do hospital. Quando o sócio saiu, o Rafael, que era advogado, procurou o Valtinho e perguntou se fechavam a empresa. O Valtinho ficou.</p>
-      <p>Hoje são quatro pessoas fixas. Medição, corte, acabamento e instalação saem daqui, e quem responde o WhatsApp às nove da noite é o dono.</p>
+      <p>Fundada em agosto de 2019, a Marmorizart está instalada em uma das três principais avenidas de Betim, a duzentos metros do hospital regional. Serra, acabamento e expedição funcionam no mesmo endereço, o que permite acompanhar cada peça do corte até a entrega.</p>
+      <p>A equipe fixa reúne mais de vinte anos de ofício entre serrador e acabadores, com reforço de profissionais externos nas semanas de maior demanda. A marmoraria atende consumidor final, pedreiros, arquitetos, projetistas e construtoras em Betim e em mais dezesseis cidades da região.</p>
 
       <ul class="sobre__nums">
         <li><strong>2019</strong><span class="mono">ano de abertura</span></li>
-        <li><strong>+30</strong><span class="mono">anos do mestre acabador</span></li>
+        <li><strong>+20</strong><span class="mono">anos de ofício na equipe</span></li>
         <li><strong>17</strong><span class="mono">cidades atendidas</span></li>
       </ul>
     </div>
@@ -687,6 +677,10 @@
         <input id="fNome" name="nome" type="text" autocomplete="name" placeholder="Como podemos te chamar" required>
       </div>
       <div class="f">
+        <label for="fFone">Seu WhatsApp</label>
+        <input id="fFone" name="telefone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="(31) 90000-0000" required>
+      </div>
+      <div class="f">
         <label for="fCidade">Cidade e bairro</label>
         <input id="fCidade" name="cidade" type="text" placeholder="Betim, bairro Ingá Alto" required>
       </div>
@@ -771,6 +765,36 @@
   <span>Falar agora</span>
 </a>
 
+<!-- ============ FORMULÁRIO CURTO DE ORÇAMENTO ============ -->
+<div class="pop" id="lead" role="dialog" aria-modal="true" aria-labelledby="leadTitle" hidden>
+  <div class="pop__box">
+    <button class="pop__x" id="leadX" aria-label="Fechar">&times;</button>
+    <span class="mono">Orçamento sem compromisso</span>
+    <h2 id="leadTitle">Vamos ao seu orçamento</h2>
+    <p>Três campos e a conversa abre com tudo preenchido. Quem responde é o proprietário da marmoraria.</p>
+    <form id="leadForm" novalidate>
+      <input id="leadNome" type="text" autocomplete="name" placeholder="Seu nome" required>
+      <input id="leadFone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="Seu WhatsApp com DDD" required>
+      <select id="leadPeca" required>
+        <option value="">O que você precisa</option>
+        <option>Bancada de cozinha</option>
+        <option>Ilha de cozinha</option>
+        <option>Lavatório de banheiro</option>
+        <option>Soleira e peitoril</option>
+        <option>Escada e degrau</option>
+        <option>Área gourmet</option>
+        <option>Tampo de mesa</option>
+        <option>Piso, fachada e revestimento</option>
+        <option>Restauração e polimento</option>
+        <option>Lápide e arte funerária</option>
+        <option>Ainda não sei, preciso de ajuda</option>
+      </select>
+      <button class="btn btn--ouro btn--full" type="submit">Continuar no WhatsApp</button>
+    </form>
+    <p class="pop__nota mono">Seus dados vão direto para o dono da marmoraria</p>
+  </div>
+</div>
+
 <!-- ============ POP-UP ============ -->
 <div class="pop" id="pop" role="dialog" aria-modal="true" aria-labelledby="popTitle" hidden>
   <div class="pop__box">
@@ -838,7 +862,6 @@
         {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "13:00", "closes": "17:20"},
         {"@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "description": "Medição sob agendamento", "opens": "08:00", "closes": "12:00"}
       ],
-      "aggregateRating": {"@type": "AggregateRating", "ratingValue": "4.1", "reviewCount": "30", "bestRating": "5"},
       "areaServed": [
         {"@type": "City", "name": "Betim"},
         {"@type": "City", "name": "Contagem"},
