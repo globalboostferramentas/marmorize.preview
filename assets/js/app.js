@@ -57,17 +57,24 @@
 
   /* ---------------------------------------------------------------------
      AVALIAÇÕES DO GOOGLE
-     ATENÇÃO: os textos abaixo são MODELOS de exemplo, escritos para
-     mostrar o layout. Antes de publicar, troque cada item pelo comentário
-     REAL do perfil no Google Meu Negócio (nome, cidade, nota e texto).
+     Textos reais do perfil no Google Meu Negócio, transcritos das capturas
+     enviadas pelo cliente. Os prints não traziam o nome de quem avaliou,
+     por isso a assinatura usa a data da avaliação.
+     Para acrescentar outra, basta copiar uma linha deste bloco.
      --------------------------------------------------------------------- */
   var AVALIACOES = [
-    { nota: 5, texto: 'Exemplo de avaliação. Substitua este texto pelo comentário real do cliente no Google.', autor: 'Nome do cliente', local: 'Betim · Google' },
-    { nota: 5, texto: 'Exemplo de avaliação. Substitua este texto pelo comentário real do cliente no Google.', autor: 'Nome do cliente', local: 'Betim · Google' },
-    { nota: 4, texto: 'Exemplo de avaliação. Substitua este texto pelo comentário real do cliente no Google.', autor: 'Nome do cliente', local: 'Contagem · Google' },
-    { nota: 5, texto: 'Exemplo de avaliação. Substitua este texto pelo comentário real do cliente no Google.', autor: 'Nome do cliente', local: 'Betim · Google' },
-    { nota: 5, texto: 'Exemplo de avaliação. Substitua este texto pelo comentário real do cliente no Google.', autor: 'Nome do cliente', local: 'Ibirité · Google' },
-    { nota: 4, texto: 'Exemplo de avaliação. Substitua este texto pelo comentário real do cliente no Google.', autor: 'Nome do cliente', local: 'Betim · Google' }
+    { nota: 5, texto: 'Serviço na minha cozinha ficou impecável, amamos!',
+      autor: 'Avaliação no Google', local: 'há um mês' },
+    { nota: 5, texto: 'Gostei do trabalho e agilidade do serviço. Mesmo sendo leiga no assunto, consegui resolver tudo pelo WhatsApp. Tendo mais serviços, com certeza vou lá.',
+      autor: 'Avaliação no Google', local: 'há um mês' },
+    { nota: 5, texto: 'São profissionais em criar sua arte em granitos. Excelente preço, qualidade e atendimento. Entrega no dia marcado.',
+      autor: 'Avaliação no Google', local: 'há 5 anos' },
+    { nota: 5, texto: 'Fizeram um excelente trabalho na pia do meu banheiro. Recomendo, bom atendimento, prazo e qualidade do serviço.',
+      autor: 'Avaliação no Google', local: 'há 3 anos' },
+    { nota: 5, texto: 'Nossa, amei o atendimento. Super educados e cumprem o prometido, sem contar que o trabalho é excelente. Estão de parabéns pelo serviço.',
+      autor: 'Avaliação no Google', local: 'há 5 anos' },
+    { nota: 5, texto: 'Atendimento excelente, rapidez na entrega.',
+      autor: 'Avaliação no Google', local: 'há 6 anos' }
   ];
 
   /* ---------- preloader ---------- */
@@ -127,38 +134,71 @@
     });
   })();
 
-  /* ---------- carrossel de avaliações, deslizando sozinho ---------- */
-  (function reviews() {
-    var trilho = $('#trilho');
-    if (!trilho) return;
+  /* ---------- depoimentos: um por vez, com avanço automático ---------- */
+  (function depoimentos() {
+    var bloco = $('#depo'), palco = $('#depoPalco'), dots = $('#depoDots');
+    if (!bloco || !palco) return;
+    var atual = 0, relogio;
+    var animar = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function cartao(r, copia) {
-      var art = document.createElement('article');
-      art.className = 'rev';
-      if (copia) art.setAttribute('aria-hidden', 'true');
+    AVALIACOES.forEach(function (r, i) {
       var estrelas = '';
       for (var k = 0; k < 5; k++) estrelas += k < r.nota ? '★' : '☆';
-      art.innerHTML =
-        '<div class="rev__stars" aria-label="' + r.nota + ' de 5 estrelas">' + estrelas + '</div>' +
+
+      var item = document.createElement('blockquote');
+      item.className = 'depo__item' + (i === 0 ? ' is-on' : '');
+      item.id = 'depo-' + i;
+      if (i) item.hidden = true;
+      item.innerHTML =
+        '<div class="depo__stars" aria-label="' + r.nota + ' de 5 estrelas">' + estrelas + '</div>' +
         '<p>' + r.texto + '</p>' +
-        '<div class="rev__who"><strong>' + r.autor + '</strong><span>' + r.local + '</span></div>';
-      return art;
+        '<footer class="depo__quem"><strong>' + r.autor + '</strong><span>' + r.local + '</span></footer>';
+      palco.appendChild(item);
+
+      var b = document.createElement('button');
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-controls', 'depo-' + i);
+      b.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+      b.setAttribute('aria-label', 'Avaliação ' + (i + 1));
+      b.addEventListener('click', function () { mostrar(i); rodar(); });
+      dots.appendChild(b);
+    });
+
+    var itens = $$('.depo__item', palco);
+    var botoes = $$('button', dots);
+
+    function mostrar(i) {
+      atual = (i + itens.length) % itens.length;
+      itens.forEach(function (it, k) {
+        if (k === atual) {
+          it.hidden = false;
+          void it.offsetWidth;
+          it.classList.add('is-on');
+        } else {
+          it.classList.remove('is-on');
+          setTimeout(function () { if (!it.classList.contains('is-on')) it.hidden = true; }, 560);
+        }
+      });
+      botoes.forEach(function (b, k) { b.setAttribute('aria-selected', k === atual ? 'true' : 'false'); });
+      var ativo = botoes[atual];
+      if (ativo) { ativo.style.animation = 'none'; void ativo.offsetWidth; ativo.style.animation = ''; }
     }
 
-    // a lista entra duas vezes: a segunda é a cópia que faz o laço parecer infinito
-    AVALIACOES.forEach(function (r) { trilho.appendChild(cartao(r, false)); });
-    AVALIACOES.forEach(function (r) { trilho.appendChild(cartao(r, true)); });
-
-    // velocidade constante (px por segundo), independente do número de avaliações
-    function ritmo() {
-      var metade = trilho.scrollWidth / 2;
-      if (!metade) return;
-      trilho.style.setProperty('--corrida', metade + 'px');
-      trilho.style.animationDuration = (metade / 45) + 's';
+    function rodar() {
+      if (!animar) return;
+      clearInterval(relogio);
+      relogio = setInterval(function () { mostrar(atual + 1); }, 7000);
     }
-    ritmo();
-    window.addEventListener('resize', ritmo);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(ritmo);
+
+    bloco.addEventListener('mouseenter', function () { bloco.classList.add('is-parado'); clearInterval(relogio); });
+    bloco.addEventListener('mouseleave', function () { bloco.classList.remove('is-parado'); rodar(); });
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (e) {
+        if (e[0].isIntersecting) { rodar(); } else { clearInterval(relogio); }
+      }, { threshold: .3 });
+      io.observe(bloco);
+    } else { rodar(); }
   })();
 
   /* ---------- materiais: troca de painel com avanço automático ---------- */
@@ -395,7 +435,7 @@
 
   /* ---------- animação de entrada ---------- */
   (function entrada() {
-    var alvos = $$('.sechead, .card, .passos li, .g, .nao li, .ficha__frase, .ficha__dl, .tabela, .kit, .checklist, .sobre__fig, .sobre__txt, .maisopcoes, .cidades, .faq details, .form, .cta__txt, .alerta');
+    var alvos = $$('.sechead, .card, .passos li, .g, .nao li, .ficha__frase, .ficha__dl, .tabela, .kit, .checklist, .sobre__fig, .sobre__txt, .maisopcoes, .cidades, .faq details, .form, .cta__txt');
     if (!('IntersectionObserver' in window)) return;
     var io = new IntersectionObserver(function (entradas) {
       entradas.forEach(function (en) {

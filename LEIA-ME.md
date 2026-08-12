@@ -31,9 +31,12 @@ planilha fora do ar nem uma internet lenta seguram o cliente na tela.
 
 ## O que precisa ser trocado antes de publicar
 
-1. **Avaliações do Google.** Em `assets/js/app.js`, o array `AVALIACOES` (topo do arquivo) está com seis
-   textos de exemplo. Cole ali as avaliações reais do Google Meu Negócio: nota, texto e nome do autor.
-   A nota 4,1 e as 30 avaliações citadas no site vêm do briefing e já são reais.
+1. **Nome de quem avaliou.** As seis avaliações do array `AVALIACOES` (topo de `assets/js/app.js`) são
+   reais, transcritas das capturas do Google Meu Negócio. Como os prints começavam nas estrelas, o nome
+   de quem avaliou não veio junto, e a assinatura ficou como "Avaliação no Google" mais a data. Se quiser
+   os nomes, é só pegá-los no perfil e trocar o campo `autor` de cada item.
+   Duas correções de digitação foram feitas na transcrição: "concerteza" virou "com certeza" e uma
+   avaliação escrita toda em maiúsculas foi passada para caixa normal. O conteúdo não mudou.
 2. **Autoria das fotos.** A galeria está intitulada "obras executadas e projetos de referência" porque
    algumas imagens enviadas são claramente referência (a cozinha branca veio de um print do Facebook,
    o render 3D é projeto). Assim que o Rafael mandar as 8 a 12 obras próprias prometidas no briefing,
@@ -55,7 +58,7 @@ A logo aparece **monocromática** no site: `logo-marmorizart-claro.png` no fundo
 `logo-marmorizart-escuro.png` no fundo claro. A logo original com o "ART" vermelho continua em
 `logo-marmorizart.png`, usada no dado estruturado e disponível para material impresso.
 
-## Amostras de material (dobra 03)
+## Amostras de material (dobra 02)
 
 As cinco texturas (`material-*.jpg` / `.webp`) mostram a pedra de perto:
 
@@ -64,19 +67,20 @@ As cinco texturas (`material-*.jpg` / `.webp`) mostram a pedra de perto:
 - **Granito** foi recortado da foto real da escada em Branco Itaúnas que o Rafael enviou, e não da
   imagem do site antigo, que era só um fundo escuro sem textura aproveitável.
 
-Não inventei amostra de pedra com nome próprio: os cards são por família de material (granito, mármore,
-quartzito, quartzo, travertino), e as pedras específicas aparecem logo abaixo, em lista com preço. Se ele
-mandar foto de chapa de cada pedra, dá para trocar a lista por cards individuais com amostra real.
+Não inventei amostra de pedra com nome próprio: o seletor é por família de material (granito, mármore,
+quartzito, quartzo, travertino). Se ele mandar foto de chapa de cada pedra, dá para desdobrar em itens
+individuais com amostra real.
 
 Dekton, que aparece no site atual, foi retirado: não está entre os materiais confirmados no briefing.
 
-## Carrossel de avaliações
+## Avaliações (dobra 05)
 
-Ele desliza sozinho da direita para a esquerda, em laço contínuo, e pausa quando o mouse entra.
-O JavaScript duplica a lista de avaliações (a cópia recebe `aria-hidden`) e calcula a duração para manter
-uma velocidade constante de aproximadamente 45 px por segundo, independente de quantas avaliações
-existirem. Para deixar mais lento ou mais rápido, mude o divisor em `metade / 45` no `app.js`.
-Em `prefers-reduced-motion`, o movimento é desligado e o carrossel vira rolagem manual.
+Mostra uma avaliação por vez, com troca a cada 7 segundos: o texto entra em transparência subindo alguns
+pixels e o traço ativo, embaixo, se preenche em latão até a próxima entrar. Para quando o mouse encosta e
+só gira quando a seção está na tela. Dá para clicar em qualquer traço para ir direto a uma avaliação.
+É o mesmo movimento do seletor de materiais, para as duas seções rotativas falarem a mesma língua.
+
+Para trocar o ritmo, mude os 7000 do `setInterval` em `app.js` e os `7s` da animação `corre` no CSS.
 
 ## Decisões de conteúdo
 
